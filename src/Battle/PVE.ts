@@ -10,20 +10,14 @@ export default class PVE extends Battle {
   }
   
   fight(): number {
-    let result = 0;
     const p1 = this._playerOne;
     const env = this._environment;
-
-    env.forEach((monster) => { 
-      p1.attack(monster); 
-      if (env.every(() => monster.lifePoints === -1)) { result = 1; }
-    });
-    
     env.forEach((monster) => {
-      monster.attack(p1);
-      if (p1.lifePoints === -1) { result = -1; }
+      while (monster.lifePoints > 0 && p1.lifePoints > 0) {
+        p1.attack(monster);
+        monster.attack(p1);
+      }
     });
-
-    return result;
+    return super.fight();
   }
 }
